@@ -1,4 +1,5 @@
-﻿using testeBancoComC_.Model;
+﻿using MySql.Data.MySqlClient;
+using testeBancoComC_.Model;
 
 namespace testeBancoComC_
 {
@@ -6,10 +7,22 @@ namespace testeBancoComC_
     {
         static void Main(string[] args)
         {
-           ClienteModel cliente = new ClienteModel();
-            cliente.Read();
-            cliente.Create();
-            cliente.Read();
+           try
+            {
+                Menu menu = new Menu();
+                menu.MostrarMenuPrincipal();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("Erro MySql");
+                Console.WriteLine(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Erro");
+                Console.WriteLine(ex.Message);
+            }
+            
             
         }
     }
