@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using testeBancoComC_.Helpers;
 using testeBancoComC_.Model;
 
 namespace testeBancoComC_

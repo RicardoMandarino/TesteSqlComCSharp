@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Dapper;
 using MySql.Data.MySqlClient;
 using testeBancoComC_.Entity;
+using testeBancoComC_.Helpers;
 
 namespace testeBancoComC_.Model
 {
-    internal class ClienteModel : ICrud
+    internal class ClienteModel : DataBase, ICrud
     {
-        public string conectionString = "Server=localhost;Database=PETSHOP;User=root;Password=root;";
+        
         public void Create()
         {
             ClienteEntity cliente = new ClienteEntity();
@@ -73,10 +74,7 @@ namespace testeBancoComC_.Model
             return getById(id);
         }
 
-        private MySqlConnection GetConnection()
-        {
-            return new MySqlConnection(conectionString);
-        }
+        
         private ClienteEntity updateClienteNome(ClienteEntity cliente)
         {
             Console.WriteLine($"Digite o novo nome para o cliente {cliente.NOME}");
@@ -84,13 +82,7 @@ namespace testeBancoComC_.Model
             return cliente;
         }
 
-        private int Execute(string sql, object obj)
-        {
-            using (MySqlConnection con = GetConnection())
-            {
-                return con.Execute(sql, obj);
-            }
-        }
+        
 
         public void Update()
         {

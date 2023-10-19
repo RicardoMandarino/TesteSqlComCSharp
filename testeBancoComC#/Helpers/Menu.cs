@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using testeBancoComC_.Model;
 
-namespace testeBancoComC_
+namespace testeBancoComC_.Helpers
 {
     public class Menu
-    {                    
-       ClienteModel _clienteModel = new ClienteModel();
+    {
+        ClienteModel _clienteModel = new ClienteModel();
+        PasseioModel _passeioModel = new PasseioModel();
         public void MostrarMenuPrincipal()
         {
             switch (MenuPrincipal())
@@ -18,6 +19,7 @@ namespace testeBancoComC_
                     MostrarMenuCrud(_clienteModel);
                     break;
                 case 2:
+                    MostrarMenuCrud(_passeioModel);
                     break;
                 default:
                     Console.WriteLine("Opção invalida");
@@ -25,7 +27,7 @@ namespace testeBancoComC_
                     break;
             }
         }
-        
+
         public void MostrarMenuCrud(ICrud crud)
         {
             switch (MenuCrud())
@@ -55,7 +57,7 @@ namespace testeBancoComC_
             Console.ReadLine();
             MostrarMenuCrud(crud);
         }
-        
+
         public int MenuPrincipal()
         {
             Console.Clear();
@@ -74,5 +76,5 @@ namespace testeBancoComC_
             Console.WriteLine("0 - Retornar");
             return Convert.ToInt32(Console.ReadLine());
         }
-}
+    }
 }
