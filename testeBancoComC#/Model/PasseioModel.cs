@@ -32,17 +32,18 @@ namespace testeBancoComC_.Model
         }
         private double ChangeValue(double value)
         {
-            if (value > 0)
+            if (value == null)
             {
                 Console.WriteLine($"Atual = {value} deseja alterar ? S/N");
                 char resposta = Convert.ToChar(Console.ReadLine().ToUpper());
                 if (resposta == 'S')
                 {
                     Console.WriteLine("Digite o novo valor");
-                    value = Convert.ToInt32(Console.ReadLine());
+                    value = Convert.ToDouble(Console.ReadLine());
                 }
-                value = Convert.ToInt32(Console.ReadLine());
+               
             }
+            else value = Convert.ToDouble(Console.ReadLine());
             return value;
         }
         private int ChangeCliente(PasseioEntity passeio)
@@ -58,12 +59,13 @@ namespace testeBancoComC_.Model
                     Console.WriteLine("Digite o id do cliente");
                     passeio.CLIENTE.ID = Convert.ToInt32(Console.ReadLine());
                 }
-                else
-                {
-                    cliente.Read();
-                    Console.WriteLine("Digite o id do cliente");
-                    passeio.CLIENTE.ID = Convert.ToInt32(Console.ReadLine());
-                }
+                
+            }
+            else
+            {
+                cliente.Read();
+                Console.WriteLine("Digite o id do cliente");
+                passeio.CLIENTE_ID = Convert.ToInt32(Console.ReadLine());
             }
             return passeio.CLIENTE_ID;
         }
@@ -83,9 +85,9 @@ namespace testeBancoComC_.Model
         {
             PasseioEntity passeio = new PasseioEntity();
             passeio = Popular(passeio);
-            string sql = "INSERT INTO PASSEADOR VALUE (NULL, @NOME, @LOCAL_PASSEIO, @PRECO, @CLIENTE_ID";
+            string sql = "INSERT INTO PASSEADOR VALUE (NULL, @NOME, @LOCAL_PASSEIO, @PRECO, @CLIENTE_ID)";
             int linhas = this.Execute(sql, passeio);
-            Console.WriteLine($"Passeio incluido com sucesso - {linhas} linhas afetadas")
+            Console.WriteLine($"Passeio incluido com sucesso - {linhas} linhas afetadas");
         }
 
         public void Delete()
@@ -97,7 +99,7 @@ namespace testeBancoComC_.Model
         }
         private IEnumerable<PasseioEntity> ListPasseioEntity()
         {
-            string sql = "SELECT * FROM PASSEADOR P JOIN CLIENTE WHERE P.CLIENTE_ID = C.ID ";
+            string sql = "SELECT * FROM PASSEADOR P JOIN CLIENTE C WHERE P.CLIENTE_ID = C.ID ";
             return this.GetConnection().Query<PasseioEntity, ClienteEntity, PasseioEntity>(
                 sql,
                 (passeio, cliente) =>
@@ -110,12 +112,32 @@ namespace testeBancoComC_.Model
         
         public void Read()
         {
-            
+            foreach(var passeio in ListPasseioEntity())
+            {
+                Console.WriteLine($"{passeio.ID} - {passeio.NOME} - {passeio.LOCAL_PASSEIO} - {passeio.PRECO}");
+            }
         }
+        private PasseioEntity GetById(int id = 0)
+        {
+            if (id == 0)
+            {
+                id = GetIndex();
+            }
+            return ListPasseioEntity().Where(o => o.ID == id).ToList()[0];
 
+        }
+        private int GetIndex()
+        {
+            Read();
+            Console.WriteLine("Digite o id para continuar");
+            return Convert.ToInt32(Console.ReadLine());
+        }
         public void Update()
         {
-            throw new NotImplementedException();
+            PasseioEntity passeio = Popular(GetById());
+            string sql = "UPDATE PASSEADOR SET NOME = @NOME, LOCAL_PASSEIO = @LOCAL_PASSEIO, PRECO = @PRECO, CLIENTE_ID = @CLIENTE_ID WHERE ID = @ID";
+            int linhas = this.Execute(sql, passeio);
+            Console.WriteLine($"Produto atualizado - {linhas} linhas afetadas");
         }
     }
 }
