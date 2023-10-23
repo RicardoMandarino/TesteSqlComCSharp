@@ -48,7 +48,7 @@ namespace testeBancoComC_.Model
         }
         private int ChangeCliente(PasseioEntity passeio)
         {   
-            ClienteModel cliente = new ClienteModel();
+            ClienteModel cliente = new();
             if (passeio.CLIENTE_ID > 0)
             {
                 Console.WriteLine($"Atual = {passeio.CLIENTE.NOME}  deseja alterar ? S/N");
@@ -83,7 +83,7 @@ namespace testeBancoComC_.Model
         }
         public void Create()
         {
-            PasseioEntity passeio = new PasseioEntity();
+            PasseioEntity passeio = new();
             passeio = Popular(passeio);
             string sql = "INSERT INTO PASSEADOR VALUE (NULL, @NOME, @LOCAL_PASSEIO, @PRECO, @CLIENTE_ID)";
             int linhas = this.Execute(sql, passeio);
@@ -114,7 +114,7 @@ namespace testeBancoComC_.Model
         {
             foreach(var passeio in ListPasseioEntity())
             {
-                Console.WriteLine($"{passeio.ID} - {passeio.NOME} - {passeio.LOCAL_PASSEIO} - {passeio.PRECO}");
+                Console.WriteLine($"{passeio.ID} - Passeador: {passeio.NOME} - Local: {passeio.LOCAL_PASSEIO} - Preço: {passeio.PRECO}R$ - Cliente: {passeio.CLIENTE.NOME} - Cachorro: {passeio.CLIENTE.NOME_CACHORRO}");
             }
         }
         private PasseioEntity GetById(int id = 0)
